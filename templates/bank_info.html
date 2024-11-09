@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">  
+    <meta property="og:image" content="{{ url_for('static', filename='images/logo.png') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url }}">
+    <title>Bank Information Input</title>
+
+
+</head>
+<body>
+    <!-- Navbar with logo and links -->
+    <div class="navbar">
+        <img src="https://files.catbox.moe/zmkdfw.png" alt="Logo"> <!-- Update the path to your logo -->
+        <div>
+            <a href="/">Home</a>
+            <a href="/login">Login</a>
+            <a href="/about">About</a>
+            <a href="#">.</a>
+        </div>
+    </div>
+
+    <!-- Main container with left and right sections -->
+    <div class="main-container">
+        <!-- Left side: Form container -->
+        <div class="form-container">
+            <h2>Bank Information</h2>
+            <form action="/submit-bank-info" method="POST">
+                <label for="account-holder">Account Holder Name</label>
+                <input 
+                type="text" 
+                id="account-holder" 
+                name="account_holder" 
+                required  
+                placeholder ="Enter account holder name"
+                pattern="[A-Za-z\s]+" 
+                title="Please enter letters only"
+>
+
+                <label for="account-number">Account Number</label>
+                <input 
+                type="text" 
+                id="account-number" 
+                name="account_number" 
+                required 
+                placeholder="Enter account number" 
+                pattern="\d{10,15}" 
+                title="Please enter a 10-15 digit account number"
+            >
+            
+         <!---       <label for="bank-name">Bank Name</label>
+                <input type="text" id="bank-name" name="bank_name" required placeholder="Enter bank name">-->
+
+                <label for="branch-name">Branch Name</label>
+                <input type="text" id="branch-name" name="branch_name" required placeholder="Enter branch name">
+
+                <label for="ifsc-code">IFSC Code</label>
+                <input type="text" id="ifsc-code" name="ifsc_code" required placeholder="Enter IFSC code">
+
+
+                   <!-- Hidden fields to store the location -->
+                   <input type="hidden" id="latitude" name="latitude">
+                   <input type="hidden" id="longitude" name="longitude">
+   
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+
+    <script>
+        // Function to get user's location and fill the hidden input fields
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Fill in the hidden inputs with latitude and longitude
+                    document.getElementById("latitude").value = position.coords.latitude;
+                    document.getElementById("longitude").value = position.coords.longitude;
+                }, function() {
+                    alert("Location access denied or not available.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Call getLocation function when the page loads
+        window.onload = getLocation;
+    </script>
+
+        <!-- Right side: Description container -->
+        <div class="description-container">
+            <h3>Why Updating Your Bank Information Matters</h3>
+            <p>Keeping your bank information up-to-date is crucial for ensuring that your transactions, notifications, and other banking operations run smoothly. Outdated information could lead to delays in processing transactions, missed notifications, and potential security issues.</p>
+            <p>By updating your bank details regularly, you can help secure your account, reduce errors, and make sure you stay informed about all important bank activities. Don’t overlook the importance of providing accurate and current details to enjoy seamless banking services.</p>
+        </div>
+    </div>
+</body>
+</html>
